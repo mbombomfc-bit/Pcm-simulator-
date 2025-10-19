@@ -1,0 +1,138 @@
+import React, { useState } from 'react';
+
+const CareerSimulator = () => {
+  const [playerName, setPlayerName] = useState('');
+  const [position, setPosition] = useState('');
+  const [stage, setStage] = useState('start');
+  const [stats, setStats] = useState({ goals: 0, assists: 0, fitness: 50 });
+  const [awards, setAwards] = useState([]);
+  const [relationship, setRelationship] = useState(null);
+  const [club, setClub] = useState('Youth Academy');
+
+  const handleStartCareer = () => {
+    if (playerName && position) {
+      setStage('welcome');
+    } else {
+      alert('Please enter a name and select a position.');
+    }
+  };
+
+  const handleTraining = () => {
+    setStats((prev) => ({
+      ...prev,
+      fitness: Math.min(prev.fitness + 10, 100),
+    }));
+    setStage('decision');
+  };
+
+  const handleTransfer = () => {
+    setClub('FC Rising Stars');
+    setStage('stats');
+  };
+
+  const handleAward = () => {
+    setAwards((prev) => [...prev, 'Player of the Month']);
+    setStage('relationship');
+  };
+
+  const handleRelationship = () => {
+    setRelationship('Dating a sports journalist 💕');
+    setStage('loveLife');
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Football Career Simulator</h1>
+
+      {stage === 'start' && (
+        <div>
+          <label>
+            Player Name:
+            <input
+              type="text"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              style={{ marginLeft: '10px' }}
+            />
+          </label>
+          <br /><br />
+          <label>
+            Position:
+            <select
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              style={{ marginLeft: '10px' }}
+            >
+              <option value="">Select Position</option>
+              <option value="Striker">Striker</option>
+              <option value="Midfielder">Midfielder</option>
+              <option value="Defender">Defender</option>
+              <option value="Goalkeeper">Goalkeeper</option>
+            </select>
+          </label>
+          <br /><br />
+          <button
+            onClick={handleStartCareer}
+            style={{ backgroundColor: 'green', color: 'white', padding: '10px 20px', border: 'none' }}
+          >
+            Start Career
+          </button>
+        </div>
+      )}
+
+      {stage === 'welcome' && (
+        <div>
+          <h2>Welcome, {playerName}!</h2>
+          <p>You are starting your career as a {position} at {club}. Good luck!</p>
+          <button onClick={() => setStage('training')} style={{ padding: '10px' }}>Begin Training</button>
+        </div>
+      )}
+
+      {stage === 'training' && (
+        <div>
+          <h2>Training Ground</h2>
+          <p>Fitness: {stats.fitness}</p>
+          <button onClick={handleTraining} style={{ padding: '10px' }}>Train Hard</button>
+        </div>
+      )}
+
+      {stage === 'decision' && (
+        <div>
+          <h2>Career Decision</h2>
+          <p>Your coach offers you a transfer to a bigger club.</p>
+          <button onClick={handleTransfer} style={{ padding: '10px' }}>Accept Transfer</button>
+        </div>
+      )}
+
+      {stage === 'stats' && (
+        <div>
+          <h2>Career Stats</h2>
+          <p>Club: {club}</p>
+          <p>Goals: {stats.goals}</p>
+          <p>Assists: {stats.assists}</p>
+          <p>Fitness: {stats.fitness}</p>
+          <button onClick={handleAward} style={{ padding: '10px' }}>Play Match & Win Award</button>
+        </div>
+      )}
+
+      {stage === 'relationship' && (
+        <div>
+          <h2>Off the Pitch</h2>
+          <p>You meet someone special...</p>
+          <button onClick={handleRelationship} style={{ padding: '10px' }}>Start Relationship</button>
+        </div>
+      )}
+
+      {stage === 'loveLife' && (
+        <div>
+          <h2>Love Life</h2>
+          <p>{relationship}</p>
+          <p>Awards: {awards.join(', ') || 'None yet'}</p>
+          <button onClick={() => alert('More stages coming soon!')} style={{ padding: '10px' }}>Continue Career</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CareerSimulator;
